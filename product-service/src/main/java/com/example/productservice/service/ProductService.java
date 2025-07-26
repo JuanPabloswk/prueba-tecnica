@@ -6,4 +6,5 @@ import com.example.productservice.dto.response.ProductResponseDTO;
 public interface ProductService {
 
     ProductResponseDTO createProduct(ProductCreateDTO productCreateDTO);
+    ProductResponseDTO getProductById(Long id);
 }
