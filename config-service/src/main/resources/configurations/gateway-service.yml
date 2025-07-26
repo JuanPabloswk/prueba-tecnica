@@ -18,7 +18,7 @@ spring:
           uri: http//localhost:8081
           predicates:
             - Path=/api/product/**
-        - id: inventory-service
-          uri: http//localhost:8082
-          predicates:
-            - Path=/api/inventory/**
+#        - id: inventory-service
+#          uri: http//localhost:8082
+#          predicates:
+#            - Path=/api/inventory/**
