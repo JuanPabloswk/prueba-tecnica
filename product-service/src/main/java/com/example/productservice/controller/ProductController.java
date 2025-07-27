@@ -3,12 +3,12 @@ package com.example.productservice.controller;
 import com.example.productservice.dto.request.ProductCreateDTO;
 import com.example.productservice.dto.response.ProductResponseDTO;
 import com.example.productservice.utils.JsonApiData;
-import com.example.productservice.utils.JsonApiResponse;
 import com.example.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,16 +18,17 @@ public class ProductController {
     public final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<JsonApiData<ProductResponseDTO>> create(@RequestBody ProductCreateDTO productCreateDTO) {
-        ProductResponseDTO created = productService.createProduct(productCreateDTO);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(JsonApiResponse.build("product", String.valueOf(created.getId()), created));
+    public ResponseEntity<JsonApiData<ProductResponseDTO>> create(@RequestBody ProductCreateDTO dto) {
+        return ResponseEntity.ok(productService.createProduct(dto));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<JsonApiData<ProductResponseDTO>> getById(@PathVariable Long id) {
-        ProductResponseDTO product = productService.getProductById(id);
-        return ResponseEntity.ok(JsonApiResponse.build("product", String.valueOf(product.getId()), product));
+        return ResponseEntity.ok(productService.getProductById(id));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<JsonApiData<ProductResponseDTO>>> getAll() {
+        return ResponseEntity.ok(productService.getAllProducts());
     }
 }

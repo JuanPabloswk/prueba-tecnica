@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dc110e49-37a1-4c71-b3e7-a38b72dc55e8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/product-service/src/main/java/com/example/productservice/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/com/example/productservice/controller/ProductController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/product-service/src/main/java/com/example/productservice/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/com/example/productservice/service/ProductService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/product-service/src/main/java/com/example/productservice/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/com/example/productservice/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/java/com/example/productservice/utils/JsonApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/java/com/example/productservice/utils/JsonApiResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +107,7 @@
     "Spring Boot.GatewayServiceApplication.executor": "Run",
     "Spring Boot.InventoryServiceApplication.executor": "Run",
     "Spring Boot.ProductServiceApplication.executor": "Run",
-    "git-widget-placeholder": "feuture/get-product-by-id",
+    "git-widget-placeholder": "feuture/get-all-products",
     "last_opened_file_path": "C:/Prueba/prueba-tecnica/PruebaTecnica",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -144,7 +144,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ConfigServiceApplication">
+  <component name="RunManager" selected="Spring Boot.ProductServiceApplication">
     <configuration name="ConfigServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="config-service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.configservice.ConfigServiceApplication" />
@@ -210,6 +210,7 @@
       <workItem from="1753470596163" duration="10000" />
       <workItem from="1753471320508" duration="18189000" />
       <workItem from="1753496874829" duration="3803000" />
+      <workItem from="1753549870196" duration="3732000" />
     </task>
     <servers />
   </component>
