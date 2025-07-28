@@ -1,4 +1,4 @@
-package com.example.productservice.dto.response;
+package com.example.inventoryservice.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,12 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponseDTO {
+public class ProductWithInventoryDTO {
 
     @JsonIgnore
     private Long id;
     private String name;
     private BigDecimal price;
     private String description;
+    private Long inventoryQuantity;
 }

@@ -18,6 +18,7 @@ public class ProductMapper {
 
     public ProductResponseDTO toProductResponseDTO(Product product){
         ProductResponseDTO responseDTO = new ProductResponseDTO();
+        responseDTO.setId(product.getId());
         responseDTO.setName(product.getName());
         responseDTO.setPrice(product.getPrice());
         responseDTO.setDescription(product.getDescription());
