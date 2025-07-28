@@ -1,7 +1,9 @@
 package com.example.inventoryservice.mapper;
 
 import com.example.inventoryservice.dto.request.InventoryCreateDTO;
+import com.example.inventoryservice.dto.request.InventoryUpdateDTO;
 import com.example.inventoryservice.dto.response.InventoryResponseDTO;
+import com.example.inventoryservice.dto.response.InventoryUpdateResponseDTO;
 import com.example.inventoryservice.dto.response.ProductResponseDTO;
 import com.example.inventoryservice.dto.response.ProductWithInventoryDTO;
 import com.example.inventoryservice.model.Inventory;
@@ -17,6 +19,16 @@ public class InventoryMapper {
 
         return inventory;
     }
+
+    public void toInventoryUpdate(InventoryUpdateDTO updateDTO, Inventory inventory) {
+        if (updateDTO.getProductId() != null) {
+            inventory.setProductId(updateDTO.getProductId());
+        }
+        if (updateDTO.getQuantity() != null) {
+            inventory.setQuantity(updateDTO.getQuantity());
+        }
+    }
+
 
     public ProductWithInventoryDTO productWithInventoryDTO(ProductResponseDTO productResponseDTO, Long inventoryQuantity) {
         ProductWithInventoryDTO dto = new ProductWithInventoryDTO();
@@ -35,6 +47,13 @@ public class InventoryMapper {
         dto.setProductId(inventory.getProductId());
         dto.setQuantity(inventory.getQuantity());
 
+        return dto;
+    }
+
+    public InventoryUpdateResponseDTO toUpdateResponseDTO(Inventory inventory) {
+        InventoryUpdateResponseDTO dto = new InventoryUpdateResponseDTO();
+        dto.setProductId(inventory.getProductId());
+        dto.setQuantity(inventory.getQuantity());
         return dto;
     }
 }

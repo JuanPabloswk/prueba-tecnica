@@ -1,5 +1,8 @@
 package com.example.inventoryservice.service.impl;
 
+import com.example.inventoryservice.dto.request.InventoryUpdateDTO;
+import com.example.inventoryservice.dto.response.InventoryUpdateResponseDTO;
+import com.example.inventoryservice.exception.InventoryNotFoundException;
 import com.example.inventoryservice.exception.ProductInventoryAlreadyExistsException;
 import com.example.inventoryservice.client.ProductClient;
 import com.example.inventoryservice.dto.request.InventoryCreateDTO;
@@ -56,5 +59,18 @@ public class InventoryServiceImpl implements InventoryService {
         ProductWithInventoryDTO productWithInventoryDTO = inventoryMapper.productWithInventoryDTO(product, availableQuantity);
 
         return JsonApiResponse.build("product-inventory", productId.toString(), productWithInventoryDTO);
+    }
+
+    public JsonApiData<InventoryUpdateResponseDTO> updateInventory(Long id, InventoryUpdateDTO inventoryUpdateDTO) {
+
+        Inventory inventory = inventoryRepository.findById(id)
+                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found"));
+
+        inventoryMapper.toInventoryUpdate(inventoryUpdateDTO, inventory);
+
+        Inventory updatedInventory = inventoryRepository.save(inventory);
+
+        InventoryUpdateResponseDTO responseDTO = inventoryMapper.toUpdateResponseDTO(updatedInventory);
+        return JsonApiResponse.build("product-inventory", updatedInventory.getId().toString(), responseDTO);
     }
 }
