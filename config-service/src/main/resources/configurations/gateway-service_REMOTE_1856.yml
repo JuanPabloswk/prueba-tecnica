@@ -16,13 +16,6 @@ spring:
         - id: product-service
           uri: lb://PRODUCT-SERVICE
           predicates:
-<<<<<<< HEAD
-            - Path=/api/product/**
-        - id: inventory-service
-          uri: http//localhost:8082
-          predicates:
-            - Path=/api/inventory/**
-=======
             - Path=/api/products/**
         - id: INVENTORY-SERVICE
           uri: lb://INVENTORY-SERVICE
@@ -37,4 +30,3 @@ instance:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
->>>>>>> feature/purchase-endpoint
