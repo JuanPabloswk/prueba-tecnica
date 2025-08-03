@@ -1,11 +1,11 @@
 package com.example.inventoryservice.service.impl;
 
-import com.example.inventoryservice.exception.ProductInventoryAlreadyExistsException;
+import com.example.inventoryservice.dto.request.InventoryUpdateDTO;
+import com.example.inventoryservice.dto.request.PurchaseRequestDTO;
+import com.example.inventoryservice.dto.response.*;
+import com.example.inventoryservice.exception.*;
 import com.example.inventoryservice.client.ProductClient;
 import com.example.inventoryservice.dto.request.InventoryCreateDTO;
-import com.example.inventoryservice.dto.response.InventoryResponseDTO;
-import com.example.inventoryservice.dto.response.ProductResponseDTO;
-import com.example.inventoryservice.dto.response.ProductWithInventoryDTO;
 import com.example.inventoryservice.mapper.InventoryMapper;
 import com.example.inventoryservice.model.Inventory;
 import com.example.inventoryservice.repository.InventoryRepository;
@@ -16,7 +16,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +47,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 
     @Override
-    public JsonApiData<ProductWithInventoryDTO> getProductWithInventory(Long productId) {
+    public JsonApiData<ProductWithInventoryResponseDTO> getProductWithInventory(Long productId) {
 
         ProductResponseDTO product = Optional.ofNullable(productClient.getProductInfo(productId).getBody())
                 .orElseThrow(() -> new EntityNotFoundException("Product not found")).getAttributes();
@@ -53,8 +55,49 @@ public class InventoryServiceImpl implements InventoryService {
         Long availableQuantity = inventoryRepository.findByProductId(productId)
                 .map(Inventory::getQuantity).orElse(0L);
 
-        ProductWithInventoryDTO productWithInventoryDTO = inventoryMapper.productWithInventoryDTO(product, availableQuantity);
+        ProductWithInventoryResponseDTO productWithInventoryResponseDTO = inventoryMapper.toProductWithInventoryResponseDTO(product, availableQuantity);
 
-        return JsonApiResponse.build("product-inventory", productId.toString(), productWithInventoryDTO);
+        return JsonApiResponse.build("product-inventory", productId.toString(), productWithInventoryResponseDTO);
+    }
+
+    public JsonApiData<InventoryUpdateResponseDTO> updateInventory(Long id, InventoryUpdateDTO inventoryUpdateDTO) {
+
+        Inventory inventory = inventoryRepository.findById(id)
+                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found"));
+
+        inventoryMapper.toInventoryUpdate(inventoryUpdateDTO, inventory);
+
+        Inventory updatedInventory = inventoryRepository.save(inventory);
+
+        InventoryUpdateResponseDTO responseDTO = inventoryMapper.toUpdateResponseDTO(updatedInventory);
+        return JsonApiResponse.build("product-inventory", updatedInventory.getId().toString(), responseDTO);
+    }
+
+    @Override
+    public JsonApiData<PurchaseResponseDTO> processPurchase(PurchaseRequestDTO purchaseRequest) {
+
+        Inventory inventory = inventoryRepository.findById(purchaseRequest.getInventoryId())
+                .orElseThrow(() -> new ProductNotInInventoryException("Product not in inventory"));
+
+
+        ProductResponseDTO product = productClient.findProductById(inventory.getProductId())
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        if (inventory.getQuantity() < purchaseRequest.getQuantity()) {
+            throw new InsufficientStockException(
+                    "Insufficient stock. Available: " + inventory.getQuantity() +
+                            ", Requested: " + purchaseRequest.getQuantity());
+        }
+
+        inventory.setQuantity(inventory.getQuantity() - purchaseRequest.getQuantity());
+        inventoryRepository.save(inventory);
+
+        String purchaseId = UUID.randomUUID().toString();
+        BigDecimal total = product.getPrice().multiply(BigDecimal.valueOf(purchaseRequest.getQuantity()));
+
+        PurchaseResponseDTO purchaseResponseDTO = inventoryMapper.toPurchaseResponseDTO(
+                inventory, product, purchaseRequest, total, purchaseId);
+
+        return JsonApiResponse.build("purchase", purchaseId, purchaseResponseDTO);
     }
 }

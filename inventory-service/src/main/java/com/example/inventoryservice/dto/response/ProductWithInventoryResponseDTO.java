@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductWithInventoryDTO {
+public class ProductWithInventoryResponseDTO {
 
     @JsonIgnore
     private Long id;
